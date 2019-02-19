@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
+
 import Card from "./Card";
 
 const CardListItem = styled.section`
@@ -8,6 +10,11 @@ const CardListItem = styled.section`
   display: flex;
   flex-direction: column;
 `;
+
+
+CardList.propTypes = {
+    repos: PropTypes.array
+}
 
 export default class CardList extends Component {
   render() {

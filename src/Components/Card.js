@@ -4,6 +4,8 @@ import Avatar from "./Avatar";
 
 import * as moment from 'moment';
 
+import PropTypes from 'prop-types';
+
 const CardItem = styled.div`
   border: 1px solid #ccc;
   padding: 15px;
@@ -46,6 +48,16 @@ const PrimaryBadge = styled(Badge)`
 const DangerBadge = styled(Badge)`
   background-color: #df223a;
 `;
+
+Card.propTypes = {
+    avatar: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    stars: PropTypes.number.isRequired,
+    issues: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired
+};
 
 export default class Card extends Component {
 

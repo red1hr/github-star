@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from "styled-components";
+import PropTypes from 'prop-types';
 
 
 const AvatarWrapper = styled.div`
@@ -12,11 +13,15 @@ const AvatarWrapper = styled.div`
     flex-shrink: 0;
 `;
 
+Avatar.propTypes = {
+    avatar: PropTypes.string.isRequired
+}
+
 export default class Avatar extends Component {
   render() {
     return (
       <AvatarWrapper>
-        <img src={this.props.avatar} />
+        <img src={this.props.avatar} alt="Owner avatar" />
       </AvatarWrapper>
     )
   }
