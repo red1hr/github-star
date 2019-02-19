@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import CardList from "./Components/CardList";
 
+import loaderImg from "./Loading_icon.gif";
+
 const Wrapper = styled.div`
   margin-top: 50px;
 `;
@@ -13,7 +15,8 @@ const Title = styled.h1`
 class App extends Component {
   state = {
     topRepos: [],
-    page: 1
+    page: 1,
+    loading: false
   };
 
   loadRepos = () => {
@@ -52,10 +55,6 @@ class App extends Component {
     );
   };
 
-  kFormatter = num => {
-    return num > 999 ? (num / 1000).toFixed(1) + "k" : num;
-  };
-
   handleScroll = () => {
     var lastelm = document.querySelector("section#reposlist > div:last-child");
 
@@ -75,7 +74,9 @@ class App extends Component {
   }
 
   render() {
-    const loader = <div className="loader">Loading ...</div>;
+    if (this.state.loading) {
+      return <img src={loaderImg} alt="loader" />;
+    }
 
     return (
       <React.Fragment>

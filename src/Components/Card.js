@@ -44,7 +44,7 @@ const PrimaryBadge = styled(Badge)`
 `;
 
 const DangerBadge = styled(Badge)`
-  background-color: #ec3939;
+  background-color: #df223a;
 `;
 
 export default class Card extends Component {
