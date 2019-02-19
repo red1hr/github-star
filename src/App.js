@@ -1,27 +1,44 @@
 import React, { Component } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import CardList from './Components/CardList';
+import CardList from "./Components/CardList";
 
 const Wrapper = styled.div`
   margin-top: 50px;
 `;
- const Title = styled.h1`
-    margin-left: 30px;
-    font-style: italic;
- `;
-
-
+const Title = styled.h1`
+  margin-left: 30px;
+  font-style: italic;
+`;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      topRepos: []
-    };
+  state = {
+    topRepos: []
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    fetch(
+      "https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc"
+    )
+      .then(data => data.json())
+      .then(result => {
+        const topRepos = result.items.map(item => ({
+          id: item.id,
+          avatar: item.owner.avatar_url,
+          name: item.name,
+          description: item.description,
+          stars: item.stargazers_count,
+          issues: item.open_issues_count,
+          date: item.created_at,
+          owner: item.owner.logi
+        }));
+
+        this.setState({
+          topRepos
+        });
+
+      });
+  }
 
   render() {
     return (
@@ -29,12 +46,13 @@ class App extends Component {
         <GlobalStyle />
         <Wrapper>
           <Title>GitHub Star</Title>
-          <CardList />
+          <CardList repos={this.state.topRepos} />
         </Wrapper>
       </React.Fragment>
     );
   }
 }
+
 
 
 

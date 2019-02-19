@@ -47,19 +47,19 @@ const DangerBadge = styled(Badge)`
 
 export default class Card extends Component {
   render() {
+      const {avatar,name,description,stars,issues,date,owner} = this.props.repo;
     return (
       <CardItem>
-        <Avatar />
+        <Avatar avatar={avatar} />
         <RepoInfo>
-          <h2>Special title treatment</h2>
+          <h2>{ name }</h2>
           <p style={{fontSize: 14}}>
-            With supporting text below as a natural lead-in to additional
-            content.
+           {description}
           </p>
           <div>
-            <PrimaryBadge>Starts 16k</PrimaryBadge>
-            <DangerBadge>Issues 29</DangerBadge>
-            <span>Submitted 30 day ago by red1hr</span>
+            <PrimaryBadge>Starts {stars}</PrimaryBadge>
+            <DangerBadge>Issues {issues}</DangerBadge>
+            <span>Submitted {date} by {owner}</span>
           </div>
         </RepoInfo>
       </CardItem>

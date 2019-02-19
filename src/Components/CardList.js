@@ -13,10 +13,13 @@ export default class CardList extends Component {
   render() {
     return (
       <CardListItem>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+          {
+              this.props.repos.map(item => {
+                return (
+                    <Card key={item.id} repo={item} />
+                )
+              })
+          }
       </CardListItem>
     );
   }

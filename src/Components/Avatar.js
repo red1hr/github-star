@@ -16,7 +16,7 @@ export default class Avatar extends Component {
   render() {
     return (
       <AvatarWrapper>
-        <img src="https://via.placeholder.com/150" />
+        <img src={this.props.avatar} />
       </AvatarWrapper>
     )
   }
