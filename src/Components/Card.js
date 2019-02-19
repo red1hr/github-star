@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 
+import * as moment from 'moment';
+
 const CardItem = styled.div`
   border: 1px solid #ccc;
   padding: 15px;
@@ -21,45 +23,58 @@ const RepoInfo = styled.div`
 `;
 
 const Badge = styled.label`
-    display: inline;
-    padding: .2em .6em .3em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
 
-    background-color: #337ab7;
+  background-color: #337ab7;
 
-    margin-right: 5px;
+  margin-right: 5px;
 `;
 
 const PrimaryBadge = styled(Badge)`
-    background-color: #337ab7;
+  background-color: #337ab7;
 `;
 
 const DangerBadge = styled(Badge)`
-    background-color: #ec3939;
+  background-color: #ec3939;
 `;
 
 export default class Card extends Component {
+
+  kFormatter = num => {
+    return num > 999 ? (num / 1000).toFixed(1) + "k" : num;
+  };
+
   render() {
-      const {avatar,name,description,stars,issues,date,owner} = this.props.repo;
+    const {
+      avatar,
+      name,
+      description,
+      stars,
+      issues,
+      date,
+      owner
+    } = this.props.repo;
     return (
       <CardItem>
         <Avatar avatar={avatar} />
         <RepoInfo>
-          <h2>{ name }</h2>
-          <p style={{fontSize: 14}}>
-           {description}
-          </p>
+          <h2>{name}</h2>
+          <p style={{ fontSize: 14 }}>{description}</p>
           <div>
-            <PrimaryBadge>Starts {stars}</PrimaryBadge>
-            <DangerBadge>Issues {issues}</DangerBadge>
-            <span>Submitted {date} by {owner}</span>
+            <PrimaryBadge>Starts {this.kFormatter(stars)}</PrimaryBadge>
+            <DangerBadge>Issues {this.kFormatter(issues)}</DangerBadge>
+            <span>
+              Submitted {moment().from(date)} by {owner}
+            </span>
           </div>
         </RepoInfo>
       </CardItem>

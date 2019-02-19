@@ -11,18 +11,18 @@ const Title = styled.h1`
 `;
 
 class App extends Component {
-
   state = {
-    topRepos: []
-  }
+    topRepos: [],
+    page: 1
+  };
 
-  componentDidMount() {
-    fetch(
-      "https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc"
-    )
-      .then(data => data.json())
-      .then(result => {
-        const topRepos = result.items.map(item => ({
+  loadRepos = () => {
+    const { page, topRepos } = this.state;
+    const url = `https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc&page=${page}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        const repos = json.items.map(item => ({
           id: item.id,
           avatar: item.owner.avatar_url,
           name: item.name,
@@ -30,21 +30,62 @@ class App extends Component {
           stars: item.stargazers_count,
           issues: item.open_issues_count,
           date: item.created_at,
-          owner: item.owner.logi
+          owner: item.owner.login
         }));
 
         this.setState({
-          topRepos
+          topRepos: [...topRepos, ...repos]
         });
-
+      })
+      .catch(err => {
+        console.log("an error occurred -> ", err);
       });
+  };
+
+  loadMore = () => {
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1,
+        scrolling: true
+      }),
+      this.loadRepos
+    );
+  };
+
+  kFormatter = num => {
+    return num > 999 ? (num / 1000).toFixed(1) + "k" : num;
+  };
+
+  handleScroll = () => {
+    var lastelm = document.querySelector("section#reposlist > div:last-child");
+
+    var lastelmOffset = lastelm.offsetTop + lastelm.clientHeight;
+    var pageOffset = window.pageYOffset + window.innerHeight;
+
+    if (pageOffset > lastelmOffset) {
+      this.loadMore();
+    }
+  };
+
+  componentWillMount() {
+    this.loadRepos();
+    this.scrollListener = window.addEventListener("scroll", e => {
+      this.handleScroll(e);
+    });
   }
 
   render() {
+    const loader = <div className="loader">Loading ...</div>;
+
     return (
       <React.Fragment>
         <GlobalStyle />
-        <Wrapper>
+
+        <Wrapper
+          ref={scroller => {
+            this.scroller = scroller;
+          }}
+        >
           <Title>GitHub Star</Title>
           <CardList repos={this.state.topRepos} />
         </Wrapper>
@@ -52,10 +93,6 @@ class App extends Component {
     );
   }
 }
-
-
-
-
 
 const GlobalStyle = createGlobalStyle`
   html {
