@@ -12,9 +12,7 @@ const CardListItem = styled.section`
 `;
 
 
-CardList.propTypes = {
-    repos: PropTypes.array
-}
+
 
 export default class CardList extends Component {
   render() {
@@ -23,11 +21,15 @@ export default class CardList extends Component {
           {
               this.props.repos.map(item => {
                 return (
-                    <Card key={item.id} repo={item} />
+                    <Card key={item.id} {...item} />
                 )
               })
           }
       </CardListItem>
     );
   }
+}
+
+CardList.propTypes = {
+    repos: PropTypes.array
 }

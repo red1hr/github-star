@@ -13,9 +13,7 @@ const AvatarWrapper = styled.div`
     flex-shrink: 0;
 `;
 
-Avatar.propTypes = {
-    avatar: PropTypes.string.isRequired
-}
+
 
 export default class Avatar extends Component {
   render() {
@@ -25,4 +23,8 @@ export default class Avatar extends Component {
       </AvatarWrapper>
     )
   }
+}
+
+Avatar.propTypes = {
+    avatar: PropTypes.string.isRequired
 }

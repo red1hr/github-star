@@ -49,15 +49,7 @@ const DangerBadge = styled(Badge)`
   background-color: #df223a;
 `;
 
-Card.propTypes = {
-    avatar: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    stars: PropTypes.number.isRequired,
-    issues: PropTypes.number.isRequired,
-    date: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired
-};
+
 
 export default class Card extends Component {
 
@@ -74,7 +66,7 @@ export default class Card extends Component {
       issues,
       date,
       owner
-    } = this.props.repo;
+    } = this.props;
     return (
       <CardItem>
         <Avatar avatar={avatar} />
@@ -93,3 +85,13 @@ export default class Card extends Component {
     );
   }
 }
+
+Card.propTypes = {
+    avatar: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    stars: PropTypes.number,
+    issues: PropTypes.number,
+    date: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired
+};
