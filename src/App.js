@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import CardList from "./Components/CardList";
 
-import loaderImg from "./Loading_icon.gif";
-
 const Wrapper = styled.div`
   margin-top: 50px;
 `;
@@ -15,8 +13,7 @@ const Title = styled.h1`
 class App extends Component {
   state = {
     topRepos: [],
-    page: 1,
-    loading: false
+    page: 1
   };
 
   loadRepos = () => {
@@ -74,10 +71,6 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return <img src={loaderImg} alt="loader" />;
-    }
-
     return (
       <React.Fragment>
         <GlobalStyle />
