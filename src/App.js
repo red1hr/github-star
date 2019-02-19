@@ -13,29 +13,41 @@ const Title = styled.h1`
 class App extends Component {
   state = {
     topRepos: [],
-    page: 1
+    page: 1,
+    hasMoreRepos: true
   };
 
   loadRepos = () => {
     const { page, topRepos } = this.state;
     const url = `https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc&page=${page}`;
     fetch(url)
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 403) {
+          console.log("No More Repos...");
+          this.setState({ hasMoreRepos: false });
+        } else {
+          return response.json();
+        }
+      })
       .then(json => {
-        const repos = json.items.map(item => ({
-          id: item.id,
-          avatar: item.owner.avatar_url,
-          name: item.name,
-          description: item.description,
-          stars: item.stargazers_count,
-          issues: item.open_issues_count,
-          date: item.created_at,
-          owner: item.owner.login
-        }));
+        if (json.items) {
+          const repos = json.items.map((item, index) => ({
+            id: item.git_url + index, // Duplicate Key Problem
+            avatar: item.owner.avatar_url,
+            name: item.name,
+            description: item.description,
+            stars: item.stargazers_count,
+            issues: item.open_issues_count,
+            date: item.created_at,
+            owner: item.owner.login
+          }));
 
-        this.setState({
-          topRepos: [...topRepos, ...repos]
-        });
+          this.setState({
+            topRepos: [...topRepos, ...repos]
+          });
+        } else {
+          this.setState({ hasMoreRepos: false });
+        }
       })
       .catch(err => {
         console.log("an error occurred -> ", err);
@@ -43,10 +55,11 @@ class App extends Component {
   };
 
   loadMore = () => {
+    if (!this.state.hasMoreRepos) return;
+
     this.setState(
       prevState => ({
-        page: prevState.page + 1,
-        scrolling: true
+        page: prevState.page + 1
       }),
       this.loadRepos
     );
